@@ -14,6 +14,7 @@ var argv = require('optimist')
   .alias('c', 'config')
   .alias('o', 'output')
   .alias('e', 'dialect')
+  .alias('C', 'camelcase')
   .describe('h', 'IP/Hostname for the database.')
   .describe('d', 'Database name.')
   .describe('u', 'Username for database.')
@@ -22,6 +23,7 @@ var argv = require('optimist')
   .describe('c', 'JSON file for sending additional options to the Sequelize object.')
   .describe('o', 'What directory to place the models.')
   .describe('e', 'The dialect/engine that you\'re using: postgres, mysql, sqlite')
+  .describe('C', 'Change field names to camel case in models')
   .argv;
 
 var configFile = {};
@@ -36,7 +38,7 @@ configFile.host = argv.h || configFile.host || 'localhost';
 var auto = new sequelizeAuto(argv.d, argv.u, (argv.x || null), configFile);
 var dir = argv.o || path.resolve(process.cwd() + '/models');
 
-auto.run({spaces: true, indentation: 2, directory: dir}, function(err){
+auto.run({spaces: true, indentation: 2, directory: dir, camelCase: argv.C}, function(err){
   if (err) throw err;
   console.log('Done!');
 });
